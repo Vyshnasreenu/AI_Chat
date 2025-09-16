@@ -18,6 +18,7 @@ function App() {
           Learn React
         </a>
       </header>
+      <h2>AI Chat Assistant </h2>
     </div>
   );
 }
