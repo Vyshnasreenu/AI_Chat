@@ -2,6 +2,8 @@ import React from 'react'
 
 export const OpenAIChat = () => {
     return (
-        <div>OpenAIChat</div>
+        <div>
+            <h3>Openai</h3>
+        </div>
     )
 }
