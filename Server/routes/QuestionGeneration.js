@@ -1,5 +1,6 @@
 const express = require("express");
-const { callOpenAIGenerateQuestion } = require("../Services/OpenAI");
+const OpenAIChat = require("../services/OpenAIChat");
+// const { callOpenAIGenerateQuestion } = require("../Services/OpenAI");
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.post("/generate", async (request, res, next) => {
   Generate 5 interview questions with short sample answers.
   `;
     try {
-        const response = await callOpenAIGenerateQuestion(prompt)
+        const response = await OpenAIChat.callOpenAIGenerateQuestion(prompt)
         console.log(response)
         res.send("Interview question will generate coming soon...")
     } catch (error) {
