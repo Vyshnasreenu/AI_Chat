@@ -50,7 +50,11 @@ const AIChatUploadform = () => {
       const fileResponse = await axios.post(`${REACT_APP_URL}/Uploadfiles/extract-files`, formdata, {
         headers: { "Content-Type": "multipart/form-data" },
       })
-      console.log(fileResponse)
+      if (fileResponse) {
+        return fileResponse;
+      } else {
+        return "There is not a resume "
+      }
     } catch (error) {
       console.log(error)
     }
@@ -62,28 +66,28 @@ const AIChatUploadform = () => {
     if (uploadfile) {
       resumeText = await resumeExtracting()
     }
-    // try {
-    //   const response = await axios.post(`${REACT_APP_URL}/InterviewQuestion/generate`, {
-    //     jobDescription: jobDesc,
-    //     resume: resumeText,
-    //   })
-    //   if (response) {
-    //     setTimeout(() => {
-    //       setGenerateQS(response.data)
-    //       setIsLoading(false)
-    //       setUploadFile("");
-    //       setJobDesc("")
-    //     }, 2000);
-    //   } else {
-    //     setErrorMsg("Failed generate interview questions. Please try again later!")
-    //     setIsLoading(false)
-    //   }
-    // } catch (error) {
-    //   setTimeout(() => {
-    //     setErrorMsg(error.message)
-    //     setIsLoading(false)
-    //   }, 2000);
-    // }
+    try {
+      const response = await axios.post(`${REACT_APP_URL}/InterviewQuestion/generate`, {
+        jobDescription: jobDesc,
+        resume: resumeText.data,
+      })
+      if (response) {
+        console.log(response)
+        setTimeout(() => {
+          setGenerateQS(response.data)
+          setIsLoading(false)
+          setJobDesc("")
+        }, 2000);
+      } else {
+        setErrorMsg("Failed generate interview questions. Please try again later!")
+        setIsLoading(false)
+      }
+    } catch (error) {
+      setTimeout(() => {
+        setErrorMsg(error.message)
+        setIsLoading(false)
+      }, 2000);
+    }
 
 
   }
