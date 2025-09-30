@@ -3,30 +3,15 @@ const cors = require("cors");
 
 const InterviewQuestion = require("../Server/routes/QuestionGeneration")
 const uploadExtractFiles = require("../Server/routes/Extractfiles")
+
+const JwtRouter = require("./routes/JwtAuthRoute");
+const authenticate = require("./middelware/AuthenticationMiddelware");
 const app = express();
 app.use(express.json())
 app.use(cors())
 
 // app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-// app.use(cors({
-//     origin: "http://localhost:3002", // allow React app
-//     methods: ["GET", "POST", "PUT", "DELETE"], // allowed methods
-//     // credentials: true // if you need cookies/auth headers
-// }));
 const port = process.env.PORT || 4000;
-
-
-// app.use((err, req, res, next) => {
-//     console.error("Error stack:", err.stack);
-
-//     res.status(err.status || 500).json({
-//         success: false,
-//         error: {
-//             message: err.message,
-//             status: err.status || 500,
-//         },
-//     });
-// });
 
 
 
@@ -36,17 +21,19 @@ app.get("/", (req, res) => {
     res.send("Express server is started...")
 })
 
+// Public routes
+app.use("/auth", JwtRouter)
 
 
-app.post("/express/test", (req, res) => {
-    // const text = req.body;
-    console.log(req.body)
-    res.send("Express first method")
+// Protected route (only valid JWT users can access)
+app.get("/dashboard", authenticate, (req, res, next) => {
+    res.json({ message: `Welcome ${req.user.username} to the dashboard` });
 })
 
+
 // Handling middleware routers in sepeartely...
-app.use("/OpenAI/InterviewQuestion", InterviewQuestion)
-app.use("/OpenAI/Uploadfiles", uploadExtractFiles)
+// app.use("/OpenAI/InterviewQuestion", InterviewQuestion)
+// app.use("/OpenAI/Uploadfiles", uploadExtractFiles)
 
 
 
